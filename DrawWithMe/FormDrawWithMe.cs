@@ -32,6 +32,8 @@ namespace DrawWithMe
             Clear(Color.White);
             Canvas.BackgroundImage = image;
             this.DoubleBuffered = true;
+            panelColor1.BackColor = color1;
+            panelColor2.BackColor = color2;
         }
 
         #region Events
@@ -48,15 +50,20 @@ namespace DrawWithMe
             SetStatus(NewPoint.X + ", " + NewPoint.Y);
 
             if (e.Button == MouseButtons.Left)
+            {
                 if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
-                    DrawLine(OldPoint, NewPoint);
+                    DrawLine(OldPoint, NewPoint, color1);
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
+                    DrawLine(OldPoint, NewPoint, color2);
+            }
         }
 
         private void Click(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-                Paste(LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG"), e.X, e.Y);
-            else if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
                 {
@@ -65,6 +72,13 @@ namespace DrawWithMe
                     Canvas.BackgroundImage = image;
                 }
             }
+            else if (e.Button == MouseButtons.Right)
+                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
+                {
+                    image = new Bitmap(image, Canvas.Size);
+                    image.SetPixel(NewPoint.X, NewPoint.Y, color2);
+                    Canvas.BackgroundImage = image;
+                }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -77,15 +91,23 @@ namespace DrawWithMe
             var bmp = LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG");
         }
 
-        private void buttonColor_Click(object sender, EventArgs e)
-        {
-            colorDialog.ShowDialog();
-            color1 = colorDialog.Color;
-        }
-
         new private void Resize(object sender, EventArgs e)
         {
             new FormResize(this).ShowDialog();
+        }
+
+        private void panelColor1_MouseClick(object sender, MouseEventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            color1 = colorDialog1.Color;
+            panelColor1.BackColor = color1;
+        }
+
+        private void panelColor2_MouseClick(object sender, MouseEventArgs e)
+        {
+            colorDialog2.ShowDialog();
+            color2 = colorDialog2.Color;
+            panelColor2.BackColor = color2;
         }
         #endregion
 
@@ -102,9 +124,11 @@ namespace DrawWithMe
 
         public void Clear(Color color)
         {
+            image = new Bitmap(image, Canvas.Size);
             for (int col = 0; col < image.Width; col++)
                 for (int row = 0; row < image.Height; row++)
                     image.SetPixel(col, row, color);
+            Canvas.BackgroundImage = image;
         }
 
         public void Paste(Bitmap toPaste, int x, int y)
@@ -120,12 +144,12 @@ namespace DrawWithMe
             Canvas.BackgroundImage = image;
         }
 
-        public void DrawLine(Point p1, Point p2)
+        public void DrawLine(Point p1, Point p2, Color color)
         {
             image = new Bitmap(image, Canvas.Size);
 
             var g = Graphics.FromImage(image);
-            g.DrawLine(new Pen(Color.Red), p1, p2);
+            g.DrawLine(new Pen(color), p1, p2);
 
             Canvas.BackgroundImage = image;
         }

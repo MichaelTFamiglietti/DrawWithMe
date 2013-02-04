@@ -32,8 +32,7 @@
             this.buttonClear = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.Status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonColor = new System.Windows.Forms.Button();
-            this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,8 +41,11 @@
             this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabEdit = new System.Windows.Forms.TabPage();
-            this.Canvas = new DrawWithMe.BufferedPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.panelColor1 = new System.Windows.Forms.Panel();
+            this.panelColor2 = new System.Windows.Forms.Panel();
+            this.Canvas = new DrawWithMe.BufferedPanel();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabEdit.SuspendLayout();
@@ -75,17 +77,6 @@
             // 
             this.Status.Name = "Status";
             this.Status.Size = new System.Drawing.Size(0, 17);
-            // 
-            // buttonColor
-            // 
-            this.buttonColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonColor.Location = new System.Drawing.Point(490, 27);
-            this.buttonColor.Name = "buttonColor";
-            this.buttonColor.Size = new System.Drawing.Size(94, 23);
-            this.buttonColor.TabIndex = 6;
-            this.buttonColor.Text = "Color";
-            this.buttonColor.UseVisualStyleBackColor = true;
-            this.buttonColor.Click += new System.EventHandler(this.buttonColor_Click);
             // 
             // menuStrip1
             // 
@@ -158,16 +149,6 @@
             this.tabEdit.TabIndex = 0;
             this.tabEdit.Text = "Edit";
             // 
-            // Canvas
-            // 
-            this.Canvas.BackColor = System.Drawing.Color.White;
-            this.Canvas.Location = new System.Drawing.Point(0, 3);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(469, 402);
-            this.Canvas.TabIndex = 0;
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
-            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -180,12 +161,41 @@
             this.tabControl1.Size = new System.Drawing.Size(483, 437);
             this.tabControl1.TabIndex = 8;
             // 
+            // panelColor1
+            // 
+            this.panelColor1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelColor1.Location = new System.Drawing.Point(500, 27);
+            this.panelColor1.Name = "panelColor1";
+            this.panelColor1.Size = new System.Drawing.Size(32, 32);
+            this.panelColor1.TabIndex = 9;
+            this.panelColor1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelColor1_MouseClick);
+            // 
+            // panelColor2
+            // 
+            this.panelColor2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelColor2.Location = new System.Drawing.Point(538, 27);
+            this.panelColor2.Name = "panelColor2";
+            this.panelColor2.Size = new System.Drawing.Size(32, 32);
+            this.panelColor2.TabIndex = 10;
+            this.panelColor2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelColor2_MouseClick);
+            // 
+            // Canvas
+            // 
+            this.Canvas.BackColor = System.Drawing.Color.White;
+            this.Canvas.Location = new System.Drawing.Point(0, 3);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(469, 402);
+            this.Canvas.TabIndex = 0;
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            // 
             // FormDrawWithMe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 464);
-            this.Controls.Add(this.buttonColor);
+            this.Controls.Add(this.panelColor2);
+            this.Controls.Add(this.panelColor1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.buttonClear);
@@ -211,8 +221,7 @@
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel Status;
-        private System.Windows.Forms.Button buttonColor;
-        private System.Windows.Forms.ColorDialog colorDialog;
+        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
@@ -223,6 +232,9 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resizeToolStripMenuItem;
         public BufferedPanel Canvas;
+        private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.Panel panelColor1;
+        private System.Windows.Forms.Panel panelColor2;
     }
 }
 
