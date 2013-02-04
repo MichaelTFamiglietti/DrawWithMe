@@ -63,6 +63,12 @@
     <Compile Include="FormDrawWithMe.Designer.cs">
       <DependentUpon>FormDrawWithMe.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormMultiplayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMultiplayer.Designer.cs">
+      <DependentUpon>FormMultiplayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormResize.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,10 +81,14 @@
     <Compile Include="FormSave.Designer.cs">
       <DependentUpon>FormSave.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoginInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormDrawWithMe.resx">
       <DependentUpon>FormDrawWithMe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMultiplayer.resx">
+      <DependentUpon>FormMultiplayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormResize.resx">
       <DependentUpon>FormResize.cs</DependentUpon>

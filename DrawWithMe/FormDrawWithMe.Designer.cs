@@ -41,11 +41,12 @@
             this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabEdit = new System.Windows.Forms.TabPage();
+            this.Canvas = new DrawWithMe.BufferedPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.panelColor1 = new System.Windows.Forms.Panel();
             this.panelColor2 = new System.Windows.Forms.Panel();
-            this.Canvas = new DrawWithMe.BufferedPanel();
+            this.multiplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabEdit.SuspendLayout();
@@ -83,7 +84,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.multiplayerToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(596, 24);
@@ -149,6 +151,16 @@
             this.tabEdit.TabIndex = 0;
             this.tabEdit.Text = "Edit";
             // 
+            // Canvas
+            // 
+            this.Canvas.BackColor = System.Drawing.Color.White;
+            this.Canvas.Location = new System.Drawing.Point(0, 3);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(469, 402);
+            this.Canvas.TabIndex = 0;
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -179,15 +191,12 @@
             this.panelColor2.TabIndex = 10;
             this.panelColor2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelColor2_MouseClick);
             // 
-            // Canvas
+            // multiplayerToolStripMenuItem
             // 
-            this.Canvas.BackColor = System.Drawing.Color.White;
-            this.Canvas.Location = new System.Drawing.Point(0, 3);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(469, 402);
-            this.Canvas.TabIndex = 0;
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.multiplayerToolStripMenuItem.Name = "multiplayerToolStripMenuItem";
+            this.multiplayerToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.multiplayerToolStripMenuItem.Text = "Multiplayer";
+            this.multiplayerToolStripMenuItem.Click += new System.EventHandler(this.multiplayerToolStripMenuItem_Click);
             // 
             // FormDrawWithMe
             // 
@@ -235,6 +244,7 @@
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Panel panelColor1;
         private System.Windows.Forms.Panel panelColor2;
+        private System.Windows.Forms.ToolStripMenuItem multiplayerToolStripMenuItem;
     }
 }
 

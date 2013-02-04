@@ -14,17 +14,18 @@ namespace DrawWithMe
     {
         public Bitmap image;
         Color color1, color2;
-        int color;
+        public bool Online;
+        public LoginInfo LoginInfo;
 
         public Point OldPoint, NewPoint;
 
         public FormDrawWithMe(string file)
         {
             InitializeComponent();
+            Online = false;
             if (file != "")
                 LoadImage(file);
 
-            color = 0;
             color1 = Color.Black;
             color2 = Color.White;
 
@@ -109,6 +110,13 @@ namespace DrawWithMe
             color2 = colorDialog2.Color;
             panelColor2.BackColor = color2;
         }
+
+        private void multiplayerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormMultiplayer(this).ShowDialog();
+            if (Online)
+                ConnectToMultiplayer();
+        }
         #endregion
 
         public Bitmap LoadImage(string location)
@@ -152,6 +160,11 @@ namespace DrawWithMe
             g.DrawLine(new Pen(color), p1, p2);
 
             Canvas.BackgroundImage = image;
+        }
+
+        public void ConnectToMultiplayer()
+        {
+
         }
     }
 }
