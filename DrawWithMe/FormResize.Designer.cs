@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormResize));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonResize = new System.Windows.Forms.Button();
@@ -92,6 +93,7 @@
             // 
             // FormResize
             // 
+            this.AcceptButton = this.buttonResize;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(190, 87);
@@ -100,6 +102,7 @@
             this.Controls.Add(this.buttonResize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormResize";
             this.Text = "FormResize";
             ((System.ComponentModel.ISupportInitialize)(this.Width)).EndInit();

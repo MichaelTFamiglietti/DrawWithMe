@@ -21,7 +21,7 @@ namespace DrawWithMe
             InitializeComponent();
 
             bmp = image;
-            comboFileTypes.Items.AddRange(new string[] { "PNG", "BMP", "JPEG" });
+            comboFileTypes.Items.AddRange(new string[] { "PNG", "BMP", "JPEG", "ICO", "GIF", "TIFF" });
             textLocation.Text = location;
             folderBrowser.SelectedPath = location;
 
@@ -33,6 +33,8 @@ namespace DrawWithMe
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
+            if (!textLocation.Text.EndsWith("\\"))
+                textLocation.Text += "\\";
             if (textLocation.Text != "" && textName.Text != "" && comboFileTypes.Text != "")
                 Save(textLocation.Text + textName.Text, comboFileTypes.Text);
         }
@@ -47,39 +49,20 @@ namespace DrawWithMe
         {
             switch(type)
             {
-                case "BMP": SaveBMP(file); break;
-                case "JPEG": SaveJPEG(file); break;
-                case "PNG": SavePNG(file); break;
+                case "BMP": SaveAll(file + ".bmp", ImageFormat.Bmp); break;
+                case "JPEG": SaveAll(file + ".jpg", ImageFormat.Jpeg); break;
+                case "PNG": SaveAll(file + ".png", ImageFormat.Png); break;
+                case "ICO": SaveAll(file + ".ico", ImageFormat.Icon); break;
+                case "GIF": SaveAll(file + ".gif", ImageFormat.Gif); break;
+                case "TIFF": SaveAll(file + ".tiff", ImageFormat.Tiff); break;
                 default: MessageBox.Show("That file type is not supported"); break;
             }
         }
 
-        void SaveBMP(string location)
+        void SaveAll(string location, ImageFormat format)
         {
-            FileStream saveStream = new FileStream(location + ".bmp", FileMode.OpenOrCreate);
-            bmp.Save(saveStream, ImageFormat.Bmp);
-
-            saveStream.Flush();
-            saveStream.Close();
-
-            this.Close();
-        }
-
-        void SavePNG(string location)
-        {
-            FileStream saveStream = new FileStream(location + ".png", FileMode.OpenOrCreate);
-            bmp.Save(saveStream, ImageFormat.Png);
-
-            saveStream.Flush();
-            saveStream.Close();
-
-            this.Close();
-        }
-
-        void SaveJPEG(string location)
-        {
-            FileStream saveStream = new FileStream(location + ".jpeg", FileMode.OpenOrCreate);
-            bmp.Save(saveStream, ImageFormat.Jpeg);
+            FileStream saveStream = new FileStream(location, FileMode.OpenOrCreate);
+            bmp.Save(saveStream, format);
 
             saveStream.Flush();
             saveStream.Close();

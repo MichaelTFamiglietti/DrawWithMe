@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDrawWithMe));
             this.buttonClear = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.Status = new System.Windows.Forms.ToolStripStatusLabel();
@@ -41,8 +42,8 @@
             this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabEdit = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Canvas = new DrawWithMe.BufferedPanel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabEdit.SuspendLayout();
@@ -157,6 +158,16 @@
             this.tabEdit.TabIndex = 0;
             this.tabEdit.Text = "Edit";
             // 
+            // Canvas
+            // 
+            this.Canvas.BackColor = System.Drawing.Color.White;
+            this.Canvas.Location = new System.Drawing.Point(0, 3);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(469, 402);
+            this.Canvas.TabIndex = 0;
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -169,16 +180,6 @@
             this.tabControl1.Size = new System.Drawing.Size(483, 437);
             this.tabControl1.TabIndex = 8;
             // 
-            // Canvas
-            // 
-            this.Canvas.BackColor = System.Drawing.Color.White;
-            this.Canvas.Location = new System.Drawing.Point(0, 3);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(469, 402);
-            this.Canvas.TabIndex = 0;
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
-            // 
             // FormDrawWithMe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,6 +190,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.buttonClear);
             this.Controls.Add(this.tabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormDrawWithMe";
             this.Text = "Draw With Me";

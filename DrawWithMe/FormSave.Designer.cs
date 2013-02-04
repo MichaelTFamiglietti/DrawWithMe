@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSave));
             this.buttonSave = new System.Windows.Forms.Button();
             this.comboFileTypes = new System.Windows.Forms.ComboBox();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
@@ -100,6 +101,7 @@
             // 
             // FormSave
             // 
+            this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(280, 96);
@@ -109,6 +111,7 @@
             this.Controls.Add(this.textLocation);
             this.Controls.Add(this.comboFileTypes);
             this.Controls.Add(this.buttonSave);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormSave";
             this.Text = "Save File";
             this.ResumeLayout(false);
