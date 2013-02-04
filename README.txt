@@ -1,0 +1,6 @@
+Draw With Me
+============
+
+If you would like the source, download it.
+
+If you would just like the exe to play, [go here](http://cavastudios.wikidot.com/drawwithme)
