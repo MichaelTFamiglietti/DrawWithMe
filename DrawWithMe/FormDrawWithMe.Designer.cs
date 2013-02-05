@@ -165,6 +165,7 @@
             this.Canvas.Name = "Canvas";
             this.Canvas.Size = new System.Drawing.Size(469, 402);
             this.Canvas.TabIndex = 0;
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             // 
             // tabControl1
             // 

@@ -21,9 +21,9 @@ namespace DrawWithMe
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            if (textIP.Text != "" && textPort.Text != "" && textUsername.Text != "")
+            if (textIP.Text != "" && textUsername.Text != "")
             {
-                Main.LoginInfo = new LoginInfo(textUsername.Text, textPassword.Text, textIP.Text, textPort.Text);
+                Main.LoginInfo = new LoginInfo(textUsername.Text, textPassword.Text, textIP.Text, (int)Port.Value);
                 Main.Online = true;
                 this.Close();
             }

@@ -47,8 +47,7 @@ namespace DrawWithMe
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-
-            Canvas.Paste(LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG"), 0, 0);
+            Canvas.NewImage(LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG"));
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -61,6 +60,11 @@ namespace DrawWithMe
             new FormMultiplayer(this).ShowDialog();
             if (Online)
                 ConnectToMultiplayer();
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            SetStatus(Canvas.NewPoint.X + ", " + Canvas.NewPoint.Y);
         }
         #endregion
 

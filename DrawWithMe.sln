@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawWithMeServer", "DrawWithMeServer\DrawWithMeServer.csproj", "{5CC2DC89-928D-454B-9571-F8EADC16E05C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawWithMe", "DrawWithMe\DrawWithMe.csproj", "{81A623F1-3662-41CF-8AA7-74C2C9C5F325}"

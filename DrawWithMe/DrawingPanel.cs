@@ -36,16 +36,6 @@ namespace DrawWithMe
             BackgroundImage = Image;
         }
 
-        public void DrawLine(Point p1, Point p2, Color color)
-        {
-            Image = new Bitmap(Image, Size);
-
-            var g = Graphics.FromImage(Image);
-            g.DrawLine(new Pen(color), p1, p2);
-
-            BackgroundImage = Image;
-        }
-
         public void Paste(Bitmap toPaste, int x, int y)
         {
             Bitmap bmp = new Bitmap(toPaste);
@@ -66,9 +56,22 @@ namespace DrawWithMe
             BackgroundImage = Image;
         }
 
+        public void DrawLine(Point p1, Point p2, Color color)
+        {
+            Image = new Bitmap(Image, Size);
+
+            var g = Graphics.FromImage(Image);
+            g.DrawLine(new Pen(color), p1, p2);
+
+            BackgroundImage = Image;
+        }
+
         public void NewImage(Bitmap image)
         {
-
+            Image = new Bitmap(image);
+            Width = image.Width;
+            Height = image.Height;
+            BackgroundImage = Image;
         }
 
         public void ResizePanel(int width, int height)

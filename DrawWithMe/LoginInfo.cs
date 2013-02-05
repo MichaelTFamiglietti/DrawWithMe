@@ -13,12 +13,12 @@ namespace DrawWithMe
         public IPAddress IP;
         public int Port;
 
-        public LoginInfo(string username, string passowrd, string ip, string port)
+        public LoginInfo(string username, string passowrd, string ip, int port)
         {
             Username = username;
             Password = passowrd;
             IP = IPAddress.Parse(ip);
-            Port = int.Parse(port);
+            Port = port;
         }
     }
 }

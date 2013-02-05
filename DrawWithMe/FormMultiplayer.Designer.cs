@@ -30,12 +30,13 @@
         {
             this.textIP = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textUsername = new System.Windows.Forms.TextBox();
             this.textPassword = new System.Windows.Forms.MaskedTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonConnect = new System.Windows.Forms.Button();
+            this.Port = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.Port)).BeginInit();
             this.SuspendLayout();
             // 
             // textIP
@@ -53,13 +54,6 @@
             this.label1.Size = new System.Drawing.Size(41, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "IP/Port";
-            // 
-            // textPort
-            // 
-            this.textPort.Location = new System.Drawing.Point(213, 12);
-            this.textPort.Name = "textPort";
-            this.textPort.Size = new System.Drawing.Size(59, 20);
-            this.textPort.TabIndex = 2;
             // 
             // label2
             // 
@@ -104,22 +98,41 @@
             this.buttonConnect.UseVisualStyleBackColor = true;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
+            // Port
+            // 
+            this.Port.Location = new System.Drawing.Point(212, 11);
+            this.Port.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.Port.Name = "Port";
+            this.Port.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Port.Size = new System.Drawing.Size(60, 20);
+            this.Port.TabIndex = 8;
+            this.Port.Value = new decimal(new int[] {
+            3333,
+            0,
+            0,
+            0});
+            // 
             // FormMultiplayer
             // 
             this.AcceptButton = this.buttonConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 119);
+            this.Controls.Add(this.Port);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textPassword);
             this.Controls.Add(this.textUsername);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textPort);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textIP);
             this.Name = "FormMultiplayer";
             this.Text = "Multiplayer";
+            ((System.ComponentModel.ISupportInitialize)(this.Port)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -129,11 +142,11 @@
 
         private System.Windows.Forms.TextBox textIP;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textPort;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textUsername;
         private System.Windows.Forms.MaskedTextBox textPassword;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonConnect;
+        private System.Windows.Forms.NumericUpDown Port;
     }
 }
