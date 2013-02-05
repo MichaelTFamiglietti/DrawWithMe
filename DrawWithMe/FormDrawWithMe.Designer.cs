@@ -40,13 +40,13 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.multiplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabEdit = new System.Windows.Forms.TabPage();
-            this.Canvas = new DrawWithMe.BufferedPanel();
+            this.Canvas = new DrawWithMe.DrawingPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.panelColor1 = new System.Windows.Forms.Panel();
             this.panelColor2 = new System.Windows.Forms.Panel();
-            this.multiplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabEdit.SuspendLayout();
@@ -139,6 +139,13 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
+            // multiplayerToolStripMenuItem
+            // 
+            this.multiplayerToolStripMenuItem.Name = "multiplayerToolStripMenuItem";
+            this.multiplayerToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.multiplayerToolStripMenuItem.Text = "Multiplayer";
+            this.multiplayerToolStripMenuItem.Click += new System.EventHandler(this.multiplayerToolStripMenuItem_Click);
+            // 
             // tabEdit
             // 
             this.tabEdit.AutoScroll = true;
@@ -158,8 +165,6 @@
             this.Canvas.Name = "Canvas";
             this.Canvas.Size = new System.Drawing.Size(469, 402);
             this.Canvas.TabIndex = 0;
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             // 
             // tabControl1
             // 
@@ -191,13 +196,6 @@
             this.panelColor2.TabIndex = 10;
             this.panelColor2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelColor2_MouseClick);
             // 
-            // multiplayerToolStripMenuItem
-            // 
-            this.multiplayerToolStripMenuItem.Name = "multiplayerToolStripMenuItem";
-            this.multiplayerToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            this.multiplayerToolStripMenuItem.Text = "Multiplayer";
-            this.multiplayerToolStripMenuItem.Click += new System.EventHandler(this.multiplayerToolStripMenuItem_Click);
-            // 
             // FormDrawWithMe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -213,7 +211,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormDrawWithMe";
             this.Text = "Draw With Me";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Click);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -240,7 +237,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resizeToolStripMenuItem;
-        public BufferedPanel Canvas;
+        public DrawingPanel Canvas;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Panel panelColor1;
         private System.Windows.Forms.Panel panelColor2;

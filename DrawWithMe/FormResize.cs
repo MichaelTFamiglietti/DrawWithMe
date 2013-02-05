@@ -12,26 +12,21 @@ namespace DrawWithMe
     public partial class FormResize : Form
     {
         Panel panel;
-        FormDrawWithMe Parent;
+        FormDrawWithMe Main;
 
         public FormResize(FormDrawWithMe parent)
         {
-            Parent = parent;
+            Main = parent;
 
             InitializeComponent();
-            panel = Parent.Canvas;
-            Width.Value = panel.Width;
-            Height.Value = panel.Height;
+            panel = Main.Canvas;
+            numWidth.Value = panel.Width;
+            numHeight.Value = panel.Height;
         }
 
-        private void Resize(object sender, EventArgs e)
+        private void buttonResize_Click(object sender, EventArgs e)
         {
-            Bitmap old = new Bitmap(Parent.image);
-            Parent.image = new Bitmap(Parent.Canvas.Size.Width, Parent.Canvas.Size.Height);
-            Parent.Canvas.Size = new Size((int)Width.Value, (int)Height.Value);
-            Parent.Canvas.BackgroundImage = Parent.image;
-            Parent.Clear(Color.White);
-            Parent.Paste(old, 0, 0);
+            Main.Canvas.ResizePanel((int)numWidth.Value, (int)numHeight.Value);
             this.Close();
         }
     }

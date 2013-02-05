@@ -51,11 +51,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BufferedPanel.cs">
+    <Compile Include="DrawingPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="BufferedPanel.Designer.cs">
-      <DependentUpon>BufferedPanel.cs</DependentUpon>
+    <Compile Include="DrawingPanel.Designer.cs">
+      <DependentUpon>DrawingPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="FormDrawWithMe.cs">
       <SubType>Form</SubType>

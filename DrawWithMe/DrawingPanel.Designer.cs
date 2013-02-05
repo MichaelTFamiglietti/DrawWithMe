@@ -1,6 +1,6 @@
 ﻿namespace DrawWithMe
 {
-    partial class BufferedPanel
+    partial class DrawingPanel
     {
         /// <summary> 
         /// Required designer variable.

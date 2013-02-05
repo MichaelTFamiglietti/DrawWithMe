@@ -32,10 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonResize = new System.Windows.Forms.Button();
-            this.Width = new System.Windows.Forms.NumericUpDown();
-            this.Height = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.Width)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Height)).BeginInit();
+            this.numWidth = new System.Windows.Forms.NumericUpDown();
+            this.numHeight = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeight)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -65,31 +65,31 @@
             this.buttonResize.TabIndex = 4;
             this.buttonResize.Text = "Resize";
             this.buttonResize.UseVisualStyleBackColor = true;
-            this.buttonResize.Click += new System.EventHandler(this.Resize);
+            this.buttonResize.Click += new System.EventHandler(this.buttonResize_Click);
             // 
-            // Width
+            // numWidth
             // 
-            this.Width.Location = new System.Drawing.Point(53, 10);
-            this.Width.Maximum = new decimal(new int[] {
+            this.numWidth.Location = new System.Drawing.Point(53, 10);
+            this.numWidth.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
-            this.Width.Name = "Width";
-            this.Width.Size = new System.Drawing.Size(120, 20);
-            this.Width.TabIndex = 5;
+            this.numWidth.Name = "numWidth";
+            this.numWidth.Size = new System.Drawing.Size(120, 20);
+            this.numWidth.TabIndex = 5;
             // 
-            // Height
+            // numHeight
             // 
-            this.Height.Location = new System.Drawing.Point(53, 36);
-            this.Height.Maximum = new decimal(new int[] {
+            this.numHeight.Location = new System.Drawing.Point(53, 36);
+            this.numHeight.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
-            this.Height.Name = "Height";
-            this.Height.Size = new System.Drawing.Size(120, 20);
-            this.Height.TabIndex = 6;
+            this.numHeight.Name = "numHeight";
+            this.numHeight.Size = new System.Drawing.Size(120, 20);
+            this.numHeight.TabIndex = 6;
             // 
             // FormResize
             // 
@@ -97,16 +97,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(190, 87);
-            this.Controls.Add(this.Height);
-            this.Controls.Add(this.Width);
+            this.Controls.Add(this.numHeight);
+            this.Controls.Add(this.numWidth);
             this.Controls.Add(this.buttonResize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormResize";
             this.Text = "FormResize";
-            ((System.ComponentModel.ISupportInitialize)(this.Width)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Height)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -117,7 +117,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonResize;
-        private System.Windows.Forms.NumericUpDown Width;
-        private System.Windows.Forms.NumericUpDown Height;
+        private System.Windows.Forms.NumericUpDown numWidth;
+        private System.Windows.Forms.NumericUpDown numHeight;
     }
 }

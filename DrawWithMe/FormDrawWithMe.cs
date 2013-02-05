@@ -12,85 +12,57 @@ namespace DrawWithMe
 {
     public partial class FormDrawWithMe : Form
     {
-        public Bitmap image;
-        Color color1, color2;
         public bool Online;
         public LoginInfo LoginInfo;
-
-        public Point OldPoint, NewPoint;
 
         public FormDrawWithMe(string file)
         {
             InitializeComponent();
+
             Online = false;
             if (file != "")
                 LoadImage(file);
 
-            color1 = Color.Black;
-            color2 = Color.White;
+            //Setup colors
+            Canvas.Color1 = Color.Black;
+            Canvas.Color2 = Color.White;
+            colorDialog1.Color = Canvas.Color1;
+            colorDialog2.Color = Canvas.Color2;
+            panelColor1.BackColor = Canvas.Color1;
+            panelColor2.BackColor = Canvas.Color2;
 
-            image = new Bitmap(Canvas.Width, Canvas.Height);
-            Clear(Color.White);
-            Canvas.BackgroundImage = image;
-            this.DoubleBuffered = true;
-            panelColor1.BackColor = color1;
-            panelColor2.BackColor = color2;
+            //Setup image
+            Canvas.Image = new Bitmap(Canvas.Width, Canvas.Height);
+            Canvas.Clear(Color.White);
+            Canvas.BackgroundImage = Canvas.Image;
         }
 
         #region Events
 
-        private void buttonClear_Click(object sender, EventArgs e)
-        {
-            Clear(Color.White);
-        }
-
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            OldPoint = NewPoint;
-            NewPoint = new Point(e.X, e.Y);
-            SetStatus(NewPoint.X + ", " + NewPoint.Y);
-
-            if (e.Button == MouseButtons.Left)
-            {
-                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
-                    DrawLine(OldPoint, NewPoint, color1);
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
-                    DrawLine(OldPoint, NewPoint, color2);
-            }
-        }
-
-        private void Click(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
-                {
-                    image = new Bitmap(image, Canvas.Size);
-                    image.SetPixel(NewPoint.X, NewPoint.Y, color1);
-                    Canvas.BackgroundImage = image;
-                }
-            }
-            else if (e.Button == MouseButtons.Right)
-                if (NewPoint.X >= 0 && NewPoint.X < image.Width && NewPoint.Y >= 0 && NewPoint.Y < image.Height)
-                {
-                    image = new Bitmap(image, Canvas.Size);
-                    image.SetPixel(NewPoint.X, NewPoint.Y, color2);
-                    Canvas.BackgroundImage = image;
-                }
-        }
-
+        #region Buttons
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            new FormSave(image, "C:\\", null).ShowDialog();
+            new FormSave(Canvas.Image, "C:\\", null).ShowDialog();
         }
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            var bmp = LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG");
+
+            Canvas.Paste(LoadImage(@"C:\Users\Taylor\Pictures\RandomNiggahShit.PNG"), 0, 0);
         }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            Canvas.Clear(Color.White);
+        }
+
+        private void multiplayerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormMultiplayer(this).ShowDialog();
+            if (Online)
+                ConnectToMultiplayer();
+        }
+        #endregion
 
         new private void Resize(object sender, EventArgs e)
         {
@@ -100,22 +72,15 @@ namespace DrawWithMe
         private void panelColor1_MouseClick(object sender, MouseEventArgs e)
         {
             colorDialog1.ShowDialog();
-            color1 = colorDialog1.Color;
-            panelColor1.BackColor = color1;
+            Canvas.Color1 = colorDialog1.Color;
+            panelColor1.BackColor = Canvas.Color1;
         }
 
         private void panelColor2_MouseClick(object sender, MouseEventArgs e)
         {
             colorDialog2.ShowDialog();
-            color2 = colorDialog2.Color;
-            panelColor2.BackColor = color2;
-        }
-
-        private void multiplayerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new FormMultiplayer(this).ShowDialog();
-            if (Online)
-                ConnectToMultiplayer();
+            Canvas.Color2 = colorDialog2.Color;
+            panelColor2.BackColor = Canvas.Color2;
         }
         #endregion
 
@@ -128,38 +93,6 @@ namespace DrawWithMe
         public void SetStatus(string text)
         {
             Status.Text = text;
-        }
-
-        public void Clear(Color color)
-        {
-            image = new Bitmap(image, Canvas.Size);
-            for (int col = 0; col < image.Width; col++)
-                for (int row = 0; row < image.Height; row++)
-                    image.SetPixel(col, row, color);
-            Canvas.BackgroundImage = image;
-        }
-
-        public void Paste(Bitmap toPaste, int x, int y)
-        {
-            Bitmap bmp = new Bitmap(toPaste);
-            image = new Bitmap(image, Canvas.Size);
-
-            for (int col = 0; col < bmp.Width; col++)
-                for (int row = 0; row < bmp.Height; row++)
-                    if (col + x >= 0 && col + x < image.Width && row + y >= 0 && row + y < image.Height)
-                        image.SetPixel(col + x, row + y, bmp.GetPixel(col, row));
-
-            Canvas.BackgroundImage = image;
-        }
-
-        public void DrawLine(Point p1, Point p2, Color color)
-        {
-            image = new Bitmap(image, Canvas.Size);
-
-            var g = Graphics.FromImage(image);
-            g.DrawLine(new Pen(color), p1, p2);
-
-            Canvas.BackgroundImage = image;
         }
 
         public void ConnectToMultiplayer()
