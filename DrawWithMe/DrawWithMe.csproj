@@ -37,6 +37,10 @@
     <ApplicationIcon>Paint.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="alta.net, Version=2.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\alta.net.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,8 +85,6 @@
     <Compile Include="FormSave.Designer.cs">
       <DependentUpon>FormSave.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoginInfo.cs" />
-    <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormDrawWithMe.resx">

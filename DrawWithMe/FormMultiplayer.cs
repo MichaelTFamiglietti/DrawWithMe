@@ -23,7 +23,8 @@ namespace DrawWithMe
         {
             if (textIP.Text != "" && textUsername.Text != "")
             {
-                Main.LoginInfo = new LoginInfo(textUsername.Text, textPassword.Text, textIP.Text, (int)Port.Value);
+                Main.port = (int)Port.Value;
+                Main.ip = textIP.Text;
                 Main.Online = true;
                 this.Close();
             }

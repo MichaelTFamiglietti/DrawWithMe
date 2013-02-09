@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Alta.Net;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
@@ -13,8 +15,10 @@ namespace DrawWithMe
     public partial class FormDrawWithMe : Form
     {
         public bool Online;
-        public LoginInfo LoginInfo;
-
+        public ClientHandler Client;
+        public int port;
+        public string ip;
+        
         public FormDrawWithMe(string file)
         {
             InitializeComponent();
@@ -61,12 +65,12 @@ namespace DrawWithMe
             if (Online)
                 ConnectToMultiplayer();
         }
+        #endregion
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             SetStatus(Canvas.NewPoint.X + ", " + Canvas.NewPoint.Y);
         }
-        #endregion
 
         new private void Resize(object sender, EventArgs e)
         {
@@ -101,7 +105,51 @@ namespace DrawWithMe
 
         public void ConnectToMultiplayer()
         {
+            Client = new ClientHandler();
+            Client.SynchronizingObject = this;
+            Client.Connect(IPAddress.Parse(ip), port, Connect);
+            Client.ReceivedTcp += Client_ReceivedTcp;
+            Client.AuthRequested += Client_AuthRequested;
+            Client.Disconnected += Client_Disconnected;
+            Online = true;
+        }
 
+        #region Client
+        private void Client_ReceivedTcp(object sender, PacketEventArgs e)
+        {
+
+        }
+
+        private void Client_AuthRequested(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Client_Disconnected(object sender, NetEventArgs e)
+        {
+
+        }
+
+        private void DrawLine(Point p1, Point p2, Color color)
+        {
+            Canvas.Image = new Bitmap(Canvas.Image, Size);
+
+            var g = Graphics.FromImage(Canvas.Image);
+            g.DrawLine(new Pen(color), p1, p2);
+
+            Canvas.BackgroundImage = Canvas.Image;
+        }
+        #endregion
+
+        public void Connect(object sender, Exception e)
+        {
+            if (e != null)
+            {
+                MessageBox.Show(e.Message);
+                Client.Dispose();
+                Online = false;
+                return;
+            }
         }
     }
 }

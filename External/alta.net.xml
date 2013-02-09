@@ -1,0 +1,1384 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>alta.net</name>
+    </assembly>
+    <members>
+        <member name="T:Alta.Net.NetHandler">
+            <summary>
+            A class that handle the TCP / UDP protocols into a Server / Client fashion.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.DenyFiles">
+            <summary>
+            When true, the client is kicked / disconnected when receiving a file. Default is False.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.MaxMessageSize">
+            <summary>
+            Define the maximum size of a message. If a message is greater than this value, the client is kicked / disconnected. Default is integer's MaxValue.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.MaxFileSize">
+            <summary>
+            Define the maximum size of a file. If a file size is greater than this value, the client is kicked / disconnected. Default is integer's MaxValue.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.BlockingSends">
+            <summary>
+            When true, all send calls ends synchronously, otherwise it return immediately and goes asynchronously. Default to false.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.FileRepository">
+            <summary>
+            Define what folder any file received will be sent to. Default is Path's Temp directory.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.SynchronizingObject">
+            <summary>
+            Set this to a Form or control to synchronize the events calls.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.NetHandler.Tag">
+            <summary>
+            Set this to any object.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.NetHandler.ReceivedTcp">
+            <summary>
+            Fired whenever this NetHandler receive a TCP message from a client.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.NetHandler.ReceivedUdp">
+            <summary>
+            Fired whenever this NetHandler receive a UDP message from a client.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.NetHandler.ReceivedFile">
+            <summary>
+            Fired whenever this NetHandler receive a file from a client.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.NetHandler.Downloading">
+            <summary>
+            Fired when this NetHandler is receiving a file, whenever the percentage done increase, up to 100%.
+            </summary>
+        </member>
+        <member name="T:Alta.Net.NetHandler.DownloadingHandler">
+            <summary>
+            The delegate used when a download is in progress.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.NetHandler.ReceiveTcpHandler">
+            <summary>
+            The delegate used when receiving a TCP message.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.NetHandler.ReceiveUdpHandler">
+            <summary>
+            The delegate used when receiving a UDP message.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.NetHandler.ReceiveFileHandler">
+            <summary>
+            The delegate used when receiving a completely downloaded File.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="F:Alta.Net.ClientHandler.PrefetchHID">
+            <summary>
+            If set to true, this will fetch the local hardware ID sooner than before a server ask for it. Default is true.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.#ctor">
+            <summary>
+            Constructor, Initialize the handler.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Finalize">
+            <summary>
+            Destructor, calls Dispose().
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Dispose">
+            <summary>
+            Will cleanly disconnect itself and stopping the server, if either or both was made.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Connect(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Connect as a client to a server, specified by the IP address and the port.
+            </summary>
+            <param name="to">Remote address of the server.</param>
+            <param name="port">Remote port of the server.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Connect(System.Net.IPAddress,System.Int32,System.Int32)">
+            <summary>
+            Connect as a client to a server, specified by the IP address and the port.
+            </summary>
+            <param name="to">Remote address of the server.</param>
+            <param name="port">Remote port of the server.</param>
+            <param name="timeout">The amount of time to wait before cancelling the connection attempt. 0 or less means an asynchronous attempt, returning immediately.</param>
+            <returns>If timeout is anything higher than 0, will return true or false as the synchronous connection attempt succeed or not. Otherwise, will immediately return false.</returns>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Connect(System.Net.IPAddress,System.Int32,Alta.Net.ClientHandler.ResultCallback)">
+            <summary>
+            Connect as a client to a server, specified by the IP address and the port.
+            </summary>
+            <param name="to">Remote address of the server.</param>
+            <param name="port">Remote port of the server.</param>
+            <param name="cback">Method callback that will be executed upon connection success or failure.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Connect(System.Net.IPAddress,System.Int32,System.Int32,Alta.Net.ClientHandler.ResultCallback)">
+            <summary>
+            Connect as a client to a server, specified by the IP address and the port.
+            </summary>
+            <param name="to">Remote address of the server.</param>
+            <param name="port">Remote port of the server.</param>
+            <param name="timeout">The amount of time to wait before cancelling the connection attempt. 0 or less means an asynchronous attempt, returning immediately.</param>
+            <param name="cback">Method callback that will be executed upon connection success or failure.</param>
+            <returns>If timeout is anything higher than 0, will return true or false as the synchronous connection attempt succeed or not. Otherwise, will immediately return false.</returns>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.CancelConnect">
+            <summary>
+            IF a client connection is undergoing, CancelConnect will stop it.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.Disconnect">
+            <summary>
+            As a client, disconnect from a server.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendFile(System.String)">
+            <summary>
+            As a client, send a file to the receiving server.
+            </summary>
+            <param name="filepath">Path to the file.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendFile(System.String,System.Byte)">
+            <summary>
+            As a client, send a file to the receiving server.
+            </summary>
+            <param name="filepath">Path to the file.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding,System.Byte)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding,System.Byte,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[])">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[],System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[],System.Byte)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[],System.Byte,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[],System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendTcp(System.Byte[],System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.String)">
+            <summary>
+            As a client, send a UDP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.String,System.Boolean)">
+            <summary>
+            As a client, send a UDP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.String,System.Text.Encoding)">
+            <summary>
+            As a client, send a UDP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a client, send a UDP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.Byte[])">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ClientHandler.SendUdp(System.Byte[],System.Boolean)">
+            <summary>
+            As a client, send a TCP message to the receiving server.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="E:Alta.Net.ClientHandler.Disconnected">
+            <summary>
+            Fired whenever this NetHandler (as a client) disconnect from a server, by whatever means.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.ClientHandler.AuthRequested">
+            <summary>
+            Fired when this NetHandler (as a client) is asked by the server for an authentication packet.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientHandler.KeepAlive">
+            <summary>
+            The interval in seconds of which the connection's health to the server will be checked. 0 or less means no checks are made. Default is 60 seconds.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientHandler.LocalData">
+            <summary>
+            Define the NetHandler's clientside data.
+            </summary>
+        </member>
+        <member name="T:Alta.Net.ClientHandler.DisconnectedHandler">
+            <summary>
+            The delegate used when the handler is disconnected, as a client.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.ClientHandler.AuthRequestHandler">
+            <summary>
+            The delegate used when the server ask for an authentication packet.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.ClientHandler.ResultCallback">
+            <summary>
+            Used by the Connect(...) method to get the result of a connection attempt.
+            </summary>
+            <param name="sender">The instance of Nethandler which fired the callback.</param>
+            <param name="e">If success is false, this exception will not be null.</param>
+        </member>
+        <member name="T:Alta.Net.Dupe">
+            <summary>
+            Used for duplicate connections verification.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.Dupe.IP">
+            <summary>
+            Will prevent any duplicate IP.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.Dupe.HID">
+            <summary>
+            Will prevent any duplicate HID.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.Dupe.ExceptLocal">
+            <summary>
+            Will prevent any duplicate of which the connection is made at the same level as the server.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.Dupe.Nothing">
+            <summary>
+            Will Not Prevent any duplication. Overrule any other settings.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.MessageSize.Empty">
+            <summary>
+            Only the PacketType and userCommand bytes will be sent (2 bytes).
+            </summary>
+        </member>
+        <member name="F:Alta.Net.MessageSize.Small">
+            <summary>
+            Message size is 8bits valued, with a max length of 256 bytes.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.MessageSize.Normal">
+            <summary>
+            Message size is 16bits valued, with a max length of 65,535 bytes.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.MessageSize.Large">
+            <summary>
+            Message size is 32bits valued, with a max length of 4,294,967,295 bytes.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.Packet.Finalize">
+            <summary>
+            Destructor, calls Dispose().
+            </summary>
+        </member>
+        <member name="M:Alta.Net.Packet.Dispose">
+            <summary>
+            Close file streams, if any.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.Packet.Read(System.Byte[],System.Int16,System.Int32,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Read and build the message, reading from msg.
+            </summary>
+            <param name="msg">A part of the message.</param>
+            <param name="msgSize">The amount of bytes that has been received from the connection.</param>
+            <param name="fromIndex">At which point the reading should start into msg.</param>
+            <param name="denyFiles">If true, the process will stop if the packet type is a file.</param>
+            <returns>At what index the next packet should start reading to get the next packet. -1 if no excedents.</returns>
+        </member>
+        <member name="T:Alta.Net.ClientData">
+            <summary>
+            Represent a single client.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.ClientData.ClientState">
+            <summary>
+            A user object, freely modifiable by the server to further identify the client.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.LocalHID">
+            <summary>
+            The Hardware ID of the local PC.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.ExternalIP">
+            <summary>
+            The IP address of the local PC, viewn from an external server. Is null when it fail to connect to the external server.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.InternalIPs">
+            <summary>
+            The IP addresses of the local PC, viewn from itself.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.InternalIP">
+            <summary>
+            The last IP address of the local PC, viewn from itself.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.IP">
+            <summary>
+            The IP address of the client.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ClientData.HID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Alta.Net.SingleInstance">
+            <summary>
+            Helps setup a program to have a single instance of it on the local machine.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.SingleInstance.IsUnique">
+            <summary>
+            Is true when the application is unique (and therefore, running as a localhost server)
+            </summary>
+        </member>
+        <member name="M:Alta.Net.SingleInstance.#ctor(System.Int32)">
+            <summary>
+            Constructor, attempt connection with a unique instance, and if not possible, start a unique instance linked to the port.
+            </summary>
+            <param name="port">The port linked with the instance.</param>
+        </member>
+        <member name="M:Alta.Net.SingleInstance.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructor, attempt connection with a unique instance, and if not possible, start a unique instance linked to the port.
+            </summary>
+            <param name="port">The port linked with the instance.</param>
+            <param name="timeout">The amount of time in millisecond before the connection attempt fail and assume that no other instance exist.</param>
+        </member>
+        <member name="M:Alta.Net.SingleInstance.#ctor(System.Int32,System.String[])">
+            <summary>
+            Constructor, attempt connection with a unique instance, and if not possible, start a unique instance linked to the port.
+            </summary>
+            <param name="port">The port linked with the instance.</param>
+            <param name="args">The arguments to be sent when this instance is not unique.</param>
+        </member>
+        <member name="M:Alta.Net.SingleInstance.#ctor(System.Int32,System.Int32,System.String[])">
+            <summary>
+            Constructor, attempt connection with a unique instance, and if not possible, start a unique instance linked to the port.
+            </summary>
+            <param name="port">The port linked with the instance.</param>
+            <param name="timeout">The amount of time in millisecond before the connection attempt fail and assume that no other instance exist.</param>
+            <param name="args">The arguments to be sent when this instance is not unique.</param>
+        </member>
+        <member name="M:Alta.Net.SingleInstance.Dispose">
+            <summary>
+            Destroy the server and any connection made to it, if any.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.SingleInstance.NewArguments">
+            <summary>
+            As a unique application, this event is fired when a similar application with SingleInstance is launched.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.SingleInstance.SynchronizingObject">
+            <summary>
+            Set this to a Form or control to synchronize the events calls.
+            </summary>
+        </member>
+        <member name="T:Alta.Net.PacketWriter">
+            <summary>
+            Helps into building the content of a packet, into a sequence of bytes.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.#ctor">
+            <summary>
+            Constructor, initiate a MemoryStream.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Dispose">
+            <summary>
+            Close any living streams.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Reset">
+            <summary>
+            Erase all data written into the packet.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Int16[])">
+            <summary>
+            Write shorts into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.UInt16[])">
+            <summary>
+            Write unsigned shorts into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Decimal[])">
+            <summary>
+            Write decimals into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Int32[])">
+            <summary>
+            Write integers into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.UInt32[])">
+            <summary>
+            Write unsigned integers into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Int64[])">
+            <summary>
+            Write longs into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.UInt64[])">
+            <summary>
+            Write unsigned longs into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Boolean[])">
+            <summary>
+            Write booleans into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Byte[])">
+            <summary>
+            Write single bytes into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.SByte[])">
+            <summary>
+            Write signed single bytes into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Byte[][])">
+            <summary>
+            Write arrays of bytes into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Double[])">
+            <summary>
+            Write doubles into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Single[])">
+            <summary>
+            Write floats into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.String[])">
+            <summary>
+            Write strings into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Boolean,System.String[])">
+            <summary>
+            Write strings into the packet.
+            </summary>
+            <param name="as16BitSize">Define the string size length. If true, it's 16bits valued, otherwise 32bits valued.</param>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Text.Encoding,System.String[])">
+            <summary>
+            Write strings into the packet.
+            </summary>
+            <param name="encoder">Define the encoding of the string.</param>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Text.Encoding,System.Boolean,System.String[])">
+            <summary>
+            Write strings into the packet.
+            </summary>
+            <param name="encoder">Define the encoding of the string.</param>
+            <param name="as16BitSize">Define the string size length. If true, it's 16bits valued, otherwise 32bits valued.</param>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Drawing.Rectangle[])">
+            <summary>
+            Write rectangles into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Data.DataTable[])">
+            <summary>
+            Write DataTables into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="M:Alta.Net.PacketWriter.Write(System.Guid[])">
+            <summary>
+            Write Guids into the packet.
+            </summary>
+            <param name="par">The variable(s) to be written.</param>
+        </member>
+        <member name="P:Alta.Net.PacketWriter.Data">
+            <summary>
+            Return the built data array.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.PacketWriter.BaseStream">
+            <summary>
+            Return the underlying Stream.
+            </summary>
+        </member>
+        <member name="T:Alta.Net.PacketReader">
+            <summary>
+            Helps into reading the content of a sequence of bytes.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.PacketReader.Data">
+            <summary>
+            The data that is being read.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketReader.#ctor(System.Byte[])">
+            <summary>
+            Constructor, start reading the data with a MemoryStream.
+            </summary>
+            <param name="data">That data that need to be read.</param>
+        </member>
+        <member name="M:Alta.Net.PacketReader.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Constructor, start reading the data with a MemoryStream.
+            </summary>
+            <param name="data">That data that need to be read.</param>
+            <param name="len">How much bytes of the data should be read at most.</param>
+        </member>
+        <member name="M:Alta.Net.PacketReader.#ctor(System.IO.Stream)">
+            <summary>
+            Constructor, start reading from the stream.
+            </summary>
+            <param name="st">The stream that should be read from</param>
+        </member>
+        <member name="M:Alta.Net.PacketReader.Dispose">
+            <summary>
+            Close all streams.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketReader.Reset">
+            <summary>
+            Reset the reader, setting it back to the beginning.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadShort">
+            <summary>
+            Read a Int16, advancing 2 bytes.
+            </summary>
+            <returns>The next 2 bytes combined into a Int16.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadUShort">
+            <summary>
+            Read an unsigned Int16, advancing 2 bytes.
+            </summary>
+            <returns>The next 2 bytes combined into an unsigned Int16.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadDecimal">
+            <summary>
+            Read a Decimal, advancing 16 bytes.
+            </summary>
+            <returns>The next 16 bytes combined into a Decimal.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadInt">
+            <summary>
+            Read a Int32, advancing 4 bytes.
+            </summary>
+            <returns>The next 4 bytes combined into a Int32.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadUInt">
+            <summary>
+            Read an unsigned Int32, advancing 4 bytes.
+            </summary>
+            <returns>The next 4 bytes combined into an unsigned Int32.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadLong">
+            <summary>
+            Read a Int64, advancing 8 bytes.
+            </summary>
+            <returns>The next 8 bytes combined into a Int64.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadULong">
+            <summary>
+            Read an unsigned Int64, advancing 8 bytes.
+            </summary>
+            <returns>The next 8 bytes combined into an unsigned Int64.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadByte">
+            <summary>
+            Read a byte, advancing 1 byte.
+            </summary>
+            <returns>The byte that has been read.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadSByte">
+            <summary>
+            Read a signed byte, advancing 1 byte.
+            </summary>
+            <returns>The signed byte that has been read.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadBytes(System.Int32)">
+            <summary>
+            Read N bytes, advancing N bytes.
+            </summary>
+            <param name="length">The amount of bytes read.</param>
+            <returns>An array of bytes containing all of what has been read.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadDouble">
+            <summary>
+            Read a double, advancing 8 bytes.
+            </summary>
+            <returns>The next 8 bytes combined into a double.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadFloat">
+            <summary>
+            Read a float, advancing 4 bytes.
+            </summary>
+            <returns>The next 4 bytes combined into a float.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadBoolean">
+            <summary>
+            Read a boolean, advancing 1 byte.
+            </summary>
+            <returns>The boolean value that has been read..</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadString">
+            <summary>
+            Read an Unicode encoded string, advancing 4 bytes for the string size, and N bytes for the actual string.
+            </summary>
+            <returns>The Unicode encoded string.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadString(System.Boolean)">
+            <summary>
+            Read an Unicode encoded string, advancing 2 bytes if as16BitSize is true, (4 otherwise) for the string size, and N bytes for the actual string.
+            </summary>
+            <param name="as16BitSize">Define the string size length. If true, it's 16bits valued, otherwise 32bits valued.</param>
+            <returns>The Unicode encoded string.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadString(System.Text.Encoding)">
+            <summary>
+            Read an Unicode encoded string, advancing 2 bytes if as16BitSize is true, (4 otherwise) for the string size, and N bytes for the actual string.
+            </summary>
+            <param name="encoder">Define the encoding of the string.</param>
+            <returns>The Unicode encoded string.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadString(System.Text.Encoding,System.Boolean)">
+            <summary>
+            Read an Unicode encoded string, advancing 2 bytes if as16BitSize is true, (4 otherwise) for the string size, and N bytes for the actual string.
+            </summary>
+            <param name="encoder">Define the encoding of the string.</param>
+            <param name="as16BitSize">Define the string size length. If true, it's 16bits valued, otherwise 32bits valued.</param>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadRect">
+            <summary>
+            Read a rectangle, advancing 16 bytes (4 bytes for each of the X, Y, Width and Height).
+            </summary>
+            <returns>The rectangle.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadDataTable">
+            <summary>
+            Read a DataTable.
+            </summary>
+            <returns>The DataTable.</returns>
+        </member>
+        <member name="M:Alta.Net.PacketReader.ReadGuid">
+            <summary>
+            Read a Guid, advancing 16 bytes.
+            </summary>
+            <returns>The Guid.</returns>
+        </member>
+        <member name="P:Alta.Net.PacketReader.IsAtEnd">
+            <summary>
+            Is true if the stream reached the end.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.PacketReader.BaseStream">
+            <summary>
+            Return the underlying Stream.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.ServerHandler.PreventDuplicate">
+            <summary>
+            Only relevant when a NetHandler is used as a server, allow the prevention of duplicate IPs. Default is ExceptLocal.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.ServerHandler.AlsoGetHID">
+            <summary>
+            If set to true, as a server, the handler will demand the hardware ID of the client before accepting it. Default is true.
+            </summary>
+        </member>
+        <member name="F:Alta.Net.ServerHandler.AuthValidation">
+            <summary>
+            If not null, the method set to this delegate will be called when a client connect.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.#ctor">
+            <summary>
+            Constructor, Initialize the handler.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Finalize">
+            <summary>
+            Destructor, calls Dispose().
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Dispose">
+            <summary>
+            Will cleanly disconnect itself and stopping the server, if either or both was made.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Dispose(System.Boolean)">
+            <summary>
+            Will cleanly disconnect itself and stopping the server, if either or both was made.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.ReadExtra(Alta.Net.ClientData,System.Byte[],System.Int16,System.Int16)">
+            <summary>
+            Return true if the next packet must be read, false if the HID has been successfully received, throw a FormatException if it failed to parse it.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Start(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Start a server, with a IP Address to listen to and a port number
+            </summary>
+            <param name="listenTo">IP Address to listen, Usually IPAddress.Any.</param>
+            <param name="port">Port number to listen to, along the IP address.</param>
+            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Net.Sockets.SocketException"></exception>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Start(System.Net.IPAddress,System.Int32,System.Int32)">
+            <summary>
+            Start a server, with a IP Address to listen to, a port number and the maximum possible amount of connected clients.
+            </summary>
+            <param name="listenTo">IP Address to listen, Usually IPAddress.Any.</param>
+            <param name="port">Port number to listen to, along the IP address.</param>
+            <param name="maxClient">Max amount of connected client. Default is -1, limitless.</param>
+            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Net.Sockets.SocketException"></exception>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Start(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Start a server, with a IP Address to listen to, a port number, a max amount of connected clients and a the login queue size (backlog),
+            </summary>
+            <param name="listenTo">IP Address to listen, Usually IPAddress.Any.</param>
+            <param name="port">Port number to listen to, along the IP address.</param>
+            <param name="maxClient">Max amount of connected client. Default is -1, limitless.</param>
+            <param name="backlog">The login queue size.</param>
+            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Net.Sockets.SocketException"></exception>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Stop">
+            <summary>
+            Will stop the server, if any is started, while silently disconnecting any clients.
+            </summary>
+            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Net.Sockets.SocketException"></exception>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.Stop(System.Boolean)">
+            <summary>
+            Will stop the server, if any is started, while silently disconnecting any clients or not, depending on withEvent's value.
+            </summary>
+            <param name="withEvent">IF true, it will fire ServerLostConnection events for any connected clients.</param>
+            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Net.Sockets.SocketException"></exception>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SuspendLogins">
+            <summary>
+            Suspend the possibility of clients to connect with the server.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SuspendLogins(System.Boolean)">
+            <summary>
+            Suspend or resume the possibility of clients to connect with the server.
+            </summary>
+            <param name="state">If true, it will suspend the server's login. If false, it will resume it."/></param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.ResumeLogins">
+            <summary>
+            Resume the possibility of clients to connect with the server.
+            </summary>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.ResumeLogins(System.Boolean)">
+            <summary>
+            Resume or suspend the possibility of clients to connect with the server.
+            </summary>
+            <param name="state">If true, it will resume the server's login. If false, it will suspend it."/></param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.KickClient(Alta.Net.ClientData)">
+            <summary>
+            Forcibly disconnect the client from the server.
+            </summary>
+            <param name="client">The client to disconnect.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendFile(Alta.Net.ClientData,System.String)">
+            <summary>
+            As a server, send a file to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="filepath">The local path to the file to send.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendFile(Alta.Net.ClientData,System.String,System.Byte)">
+            <summary>
+            As a server, send a file to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="filepath">The local path to the file to send.</param>
+            <param name="userCmd">The user command byte that will be sent alongside the file.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Byte)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Byte,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[])">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[],System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[],System.Byte)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[],System.Byte,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[],System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The packet type to use to determinate the size of the packet. File type is forbidden within this method.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendTcp(Alta.Net.ClientData,System.Byte[],System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The packet type to use to determinate the size of the packet. File type is forbidden within this method.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding,System.Byte)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding,System.Byte,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The packet type to use to determinate the size of the packet. File type is forbidden within this method.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.String,System.Text.Encoding,System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The packet type to use to determinate the size of the packet. File type is forbidden within this method.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[])">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[],System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[],System.Byte)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[],System.Byte,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[],System.Byte,Alta.Net.MessageSize)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastTcp(System.Byte[],System.Byte,Alta.Net.MessageSize,System.Boolean)">
+            <summary>
+            As a server, send a TCP message to all connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="userCmd">A custom user command in the form of a byte.</param>
+            <param name="messageSize">The message size to use for the packet.</param>
+            <param name="blocking">If true, the message is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.String)">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.String,System.Boolean)">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.String,System.Text.Encoding)">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.Byte[])">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.SendUdp(Alta.Net.ClientData,System.Byte[],System.Boolean)">
+            <summary>
+            As a server, send a UDP message to a specific client.
+            </summary>
+            <param name="client">The receiving client.</param>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.String)">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.String,System.Boolean)">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.String,System.Text.Encoding)">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="encoder">The encoding used to transform the message into an array of bytes.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.Byte[])">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+        </member>
+        <member name="M:Alta.Net.ServerHandler.BroadcastUdp(System.Byte[],System.Boolean)">
+            <summary>
+            As a server, send a UDP message to all TCP-connected clients.
+            </summary>
+            <param name="msg">The sent message.</param>
+            <param name="blocking">If true, the file is sent synchronously.</param>
+        </member>
+        <member name="E:Alta.Net.ServerHandler.Started">
+            <summary>
+            Fired whenever the server start.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.ServerHandler.Stopped">
+            <summary>
+            Fired whenever the server stop.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.ServerHandler.NewConnection">
+            <summary>
+            Fired whenever a client connect to the server.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.ServerHandler.LostConnection">
+            <summary>
+            Fired whenever a client disconnet from this NetHandler (as a server), by whatever means.
+            </summary>
+        </member>
+        <member name="E:Alta.Net.ServerHandler.DuplicateFound">
+            <summary>
+            Fired whenever a connection was denied by this NetHandler (as a server) for being a duplicate of an already connected client.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ServerHandler.KeepAlive">
+            <summary>
+            The interval in seconds of which all connections' health on the server will be checked. 0 or less means no checks are made. Default is 60 seconds.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ServerHandler.MaxClients">
+            <summary>
+            Readonly, set by the StartServer method. Used to determinate the max amount of clients that can be connected with the server, at any given time. Default is -1, limitless.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ServerHandler.LoginsSuspended">
+            <summary>
+            Readonly, set by SuspendServerLogins and ResumeServerLogins. Tells if any login attempt with the server will succeed or not. Default is False.
+            </summary>
+        </member>
+        <member name="P:Alta.Net.ServerHandler.Clients">
+            <summary>
+            Define the clients connected with the server. It's best to lock it with a mutex or Clients' SyncRoot property before usage.
+            </summary>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.StartedHandler">
+            <summary>
+            The delegate used when a server start.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">N/A</param>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.StoppedHandler">
+            <summary>
+            The delegate used when a server stop.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">N/A</param>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.NewConnectionHandler">
+            <summary>
+            The delegate used when a server get a new connection.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.LostConnectionHandler">
+            <summary>
+            The delegate used when a server lose a connection.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.DuplicateHandler">
+            <summary>
+            The delegate used when a server detect and deny a duplicate connection.
+            </summary>
+            <param name="sender">The NetHandler who used the delegate</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:Alta.Net.ServerHandler.AuthCallback">
+            <summary>
+            Used by the server when receiving an authentication packet to validate.
+            </summary>
+            <param name="handler">The instance of Nethandler which fired the callback.</param>
+            <param name="e">Event arguments, contains the client data and authentication packet</param>
+            <returns>True if the packet is valid, false otherwise</returns>
+        </member>
+    </members>
+</doc>
