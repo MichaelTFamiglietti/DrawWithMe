@@ -18,6 +18,9 @@ namespace DrawWithMeServer
 {
     public partial class ServerForm : Form
     {
+        public int ClearCount = 0;
+        public Point CanvasSize = new Point(469, 402);
+        
         public ServerHandler Server;
 
         public ServerForm()
@@ -61,8 +64,8 @@ namespace DrawWithMeServer
 
         private void Server_NewConnection(object sender, NetEventArgs e)
         {
-            ClientData c = e.Client;
-            WriteLine("New user from: " + c.IP.ToString());
+            WriteLine("New user from: " + e.Client.IP.ToString());
+            Server.SendTcp(e.Client, Encoding.ASCII.GetBytes("%r" + CanvasSize.X + "," + CanvasSize.Y));
         }
 
         private void Server_ReceivedTcp(object sender, PacketEventArgs e)
@@ -79,6 +82,26 @@ namespace DrawWithMeServer
                 //Message
                 message = message.Replace("%m", "");
                 SendToAll(Encoding.ASCII.GetBytes("%m" + e.Client.IP + ": " + message), true);
+            }
+            else if (message.StartsWith("%c"))
+            {
+                message = message.Replace("%c", "");
+                WriteLine(e.Client.IP + ": has requested a clear.");
+                ClearCount++;
+                if (ClearCount >= 10)
+                {
+                    SendToAll(Encoding.ASCII.GetBytes("%c"), false);
+                    WriteLine("Cleared Canvas");
+                    ClearCount = 0;
+                }
+            }
+            else if (message.StartsWith("%r"))
+            {
+                message = message.Replace("%r", "");
+                string[] split = message.Split(',');
+                CanvasSize.X = Int32.Parse(split[0]);
+                CanvasSize.Y = Int32.Parse(split[1]);
+                SendToAll(Encoding.ASCII.GetBytes("%r" + CanvasSize.X + "," + CanvasSize.Y), false);
             }
 
             textConsole.SelectionStart = textConsole.Text.Length;

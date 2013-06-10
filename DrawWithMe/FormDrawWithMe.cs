@@ -59,7 +59,10 @@ namespace DrawWithMe
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
-            Canvas.Clear(Color.White);
+            if (Online)
+                Client.SendTcp(Encoding.ASCII.GetBytes("%c"));
+            else
+                Canvas.Clear(Color.White);
         }
 
         private void multiplayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -144,6 +147,18 @@ namespace DrawWithMe
                 //Message
                 message = message.Replace("%m", "");
                 //WriteLine(message);
+            }
+            else if (message.StartsWith("%r"))
+            {
+                //Resize
+                message = message.Replace("%r", "");
+                string[] split = message.Split(',');
+                Canvas.ResizePanel(Int32.Parse(split[0]), Int32.Parse(split[1]));
+            }
+            else if (message.StartsWith("%c"))
+            {
+                //Clear
+                Canvas.Clear(Color.White);
             }
         }
 

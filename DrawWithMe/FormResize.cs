@@ -26,7 +26,14 @@ namespace DrawWithMe
 
         private void buttonResize_Click(object sender, EventArgs e)
         {
-            Main.Canvas.ResizePanel((int)numWidth.Value, (int)numHeight.Value);
+            if (Main.Online)
+            {
+                Main.Client.SendTcp(Encoding.ASCII.GetBytes("%r" + (int)numWidth.Value + "," + (int)numHeight.Value));
+            }
+            else
+            {
+                Main.Canvas.ResizePanel((int)numWidth.Value, (int)numHeight.Value);
+            }
             this.Close();
         }
     }
