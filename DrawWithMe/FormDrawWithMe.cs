@@ -20,7 +20,6 @@ namespace DrawWithMe
         public string ip;
         public string username;
         public string password;
-        public bool mouseSend = true;
         
         public FormDrawWithMe(string file)
         {
@@ -71,19 +70,9 @@ namespace DrawWithMe
         }
         #endregion
 
-        int moveAmt = 0;
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             SetStatus(Canvas.NewPoint.X + ", " + Canvas.NewPoint.Y);
-            if (Online && moveAmt == 0 && mouseSend)
-            {
-                string s = "%m" + Canvas.NewPoint.X + "," + Canvas.NewPoint.Y;
-                Client.SendTcp(Encoding.ASCII.GetBytes(s));
-            }
-            mouseSend = true;
-            moveAmt++;
-            if (moveAmt >= 10)
-                moveAmt = 0;
         }
 
         new private void Resize(object sender, EventArgs e)
@@ -141,18 +130,20 @@ namespace DrawWithMe
                 string[] split = message.Split('_');
                 string[] sP1 = split[0].Split(',');
                 string[] sP2 = split[1].Split(',');
+                string[] sColor = split[2].Split(',');
                 Point p1 = new Point(Int32.Parse(sP1[0]), Int32.Parse(sP1[1]));
                 Point p2 = new Point(Int32.Parse(sP2[0]), Int32.Parse(sP2[1]));
-                Canvas.DoDraw(p1, p2, Canvas.Color1);
+
+                byte R = Byte.Parse(sColor[0]);
+                byte G = Byte.Parse(sColor[1]);
+                byte B = Byte.Parse(sColor[2]);
+                Canvas.DoDraw(p1, p2, Color.FromArgb(255, R, G, B));
             }
             else if (message.StartsWith("%m"))
             {
-                //Move
+                //Message
                 message = message.Replace("%m", "");
-            }
-            else if (message.StartsWith("%c"))
-            {
-                //Chat
+                //WriteLine(message);
             }
         }
 

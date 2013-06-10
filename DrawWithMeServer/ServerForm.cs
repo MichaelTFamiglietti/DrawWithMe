@@ -56,7 +56,7 @@ namespace DrawWithMeServer
         #region Server Events
         private void Server_LostConnection(object sender, NetEventArgs e)
         {
-            Write("Lost user from: " + e.Client.IP.ToString());
+            WriteLine("Lost user from: " + e.Client.IP.ToString());
         }
 
         private void Server_NewConnection(object sender, NetEventArgs e)
@@ -76,13 +76,9 @@ namespace DrawWithMeServer
             }
             else if (message.StartsWith("%m"))
             {
-                //Move
+                //Message
                 message = message.Replace("%m", "");
-                //WriteLine(message);
-            }
-            else if (message.StartsWith("%c"))
-            {
-                //Chat
+                SendToAll(Encoding.ASCII.GetBytes("%m" + e.Client.IP + ": " + message), true);
             }
 
             textConsole.SelectionStart = textConsole.Text.Length;

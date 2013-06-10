@@ -61,8 +61,7 @@ namespace DrawWithMe
         {
             if (MainForm.Online)
             {
-                MainForm.mouseSend = false;
-                string s = "%d" + p1.X + "," + p1.Y + "_" + p2.X + "," + p2.Y;
+                string s = "%d" + p1.X + "," + p1.Y + "_" + p2.X + "," + p2.Y + "_" + color.R + "," + color.G + "," + color.B;
                 MainForm.Client.SendTcp(Encoding.ASCII.GetBytes(s));
             }
             else
