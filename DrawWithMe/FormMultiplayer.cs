@@ -26,6 +26,8 @@ namespace DrawWithMe
                 Main.port = (int)Port.Value;
                 Main.ip = textIP.Text;
                 Main.Online = true;
+                Main.username = textUsername.Text;
+                Main.password = textPassword.Text;
                 this.Close();
             }
             else

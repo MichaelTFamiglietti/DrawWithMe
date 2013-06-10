@@ -14,6 +14,7 @@ namespace DrawWithMe
         public Color Color1, Color2;
         public Bitmap Image;
         public Point OldPoint, NewPoint;
+        public FormDrawWithMe MainForm;
 
         public DrawingPanel()
         {
@@ -57,6 +58,18 @@ namespace DrawWithMe
         }
 
         public void DrawLine(Point p1, Point p2, Color color)
+        {
+            if (MainForm.Online)
+            {
+                MainForm.mouseSend = false;
+                string s = "%d" + p1.X + "," + p1.Y + "_" + p2.X + "," + p2.Y;
+                MainForm.Client.SendTcp(Encoding.ASCII.GetBytes(s));
+            }
+            else
+                DoDraw(p1, p2, color);
+        }
+
+        public void DoDraw(Point p1, Point p2, Color color)
         {
             Image = new Bitmap(Image, Size);
 

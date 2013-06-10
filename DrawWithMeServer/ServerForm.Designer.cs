@@ -50,6 +50,7 @@
             this.textConsole.Multiline = true;
             this.textConsole.Name = "textConsole";
             this.textConsole.ReadOnly = true;
+            this.textConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textConsole.Size = new System.Drawing.Size(413, 262);
             this.textConsole.TabIndex = 0;
             // 

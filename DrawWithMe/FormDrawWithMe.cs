@@ -18,10 +18,14 @@ namespace DrawWithMe
         public ClientHandler Client;
         public int port;
         public string ip;
+        public string username;
+        public string password;
+        public bool mouseSend = true;
         
         public FormDrawWithMe(string file)
         {
             InitializeComponent();
+            Canvas.MainForm = this;
 
             Online = false;
             if (file != "")
@@ -67,9 +71,19 @@ namespace DrawWithMe
         }
         #endregion
 
+        int moveAmt = 0;
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             SetStatus(Canvas.NewPoint.X + ", " + Canvas.NewPoint.Y);
+            if (Online && moveAmt == 0 && mouseSend)
+            {
+                string s = "%m" + Canvas.NewPoint.X + "," + Canvas.NewPoint.Y;
+                Client.SendTcp(Encoding.ASCII.GetBytes(s));
+            }
+            mouseSend = true;
+            moveAmt++;
+            if (moveAmt >= 10)
+                moveAmt = 0;
         }
 
         new private void Resize(object sender, EventArgs e)
@@ -106,38 +120,50 @@ namespace DrawWithMe
         public void ConnectToMultiplayer()
         {
             Client = new ClientHandler();
-            Client.SynchronizingObject = this;
-            Client.Connect(IPAddress.Parse(ip), port, Connect);
             Client.ReceivedTcp += Client_ReceivedTcp;
             Client.AuthRequested += Client_AuthRequested;
             Client.Disconnected += Client_Disconnected;
+            Client.SynchronizingObject = this;
+            
+            Client.Connect(IPAddress.Parse(ip), port, Connect);
             Online = true;
         }
 
         #region Client
         private void Client_ReceivedTcp(object sender, PacketEventArgs e)
         {
+            string message = Encoding.ASCII.GetString(e.Data);
 
+            if (message.StartsWith("%d"))
+            {
+                //Draw
+                message = message.Replace("%d", "");
+                string[] split = message.Split('_');
+                string[] sP1 = split[0].Split(',');
+                string[] sP2 = split[1].Split(',');
+                Point p1 = new Point(Int32.Parse(sP1[0]), Int32.Parse(sP1[1]));
+                Point p2 = new Point(Int32.Parse(sP2[0]), Int32.Parse(sP2[1]));
+                Canvas.DoDraw(p1, p2, Canvas.Color1);
+            }
+            else if (message.StartsWith("%m"))
+            {
+                //Move
+                message = message.Replace("%m", "");
+            }
+            else if (message.StartsWith("%c"))
+            {
+                //Chat
+            }
         }
 
         private void Client_AuthRequested(object sender, EventArgs e)
         {
-
         }
 
         private void Client_Disconnected(object sender, NetEventArgs e)
         {
-
-        }
-
-        private void DrawLine(Point p1, Point p2, Color color)
-        {
-            Canvas.Image = new Bitmap(Canvas.Image, Size);
-
-            var g = Graphics.FromImage(Canvas.Image);
-            g.DrawLine(new Pen(color), p1, p2);
-
-            Canvas.BackgroundImage = Canvas.Image;
+            Online = false;
+            Client.Dispose();
         }
         #endregion
 
